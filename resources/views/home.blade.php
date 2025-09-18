@@ -44,7 +44,7 @@
           class="bg-blue-900 hover:bg-blue-700 text-white font-bold py-3 px-10 rounded-lg shadow-lg transition duration-300 ease-in-out">
           BUAT PENGADUAN
         </a>
-        <a href="#"
+        <a href="{{ route('pengaduan.tracking') }}"
           class="bg-blue-900 hover:bg-blue-700 text-white font-bold py-3 px-10 rounded-lg shadow-lg transition duration-300 ease-in-out">
           CEK TRACKING
         </a>

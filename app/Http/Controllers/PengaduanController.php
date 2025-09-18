@@ -76,4 +76,16 @@ class PengaduanController extends Controller
 
         return redirect()->route('home')->with('success', 'Pengaduan Anda berhasil dikirim! Petugas akan segera memproses laporan Anda.');
     }
+    public function tracking(Request $request)
+{
+    $kode = $request->input('kode_pengaduan');
+
+    $pengaduan = null;
+    if ($kode) {
+        $pengaduan = \App\Models\Pengaduan::where('kode_pengaduan', $kode)->first();
+    }
+
+    return view('pengaduan.tracking', compact('pengaduan'));
+}
+
 }
