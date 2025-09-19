@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Buat Pengaduan - SAPA PMKS</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: url("{{ asset('images/Background.png') }}") no-repeat center center fixed;
+      background-size: cover;
+    }
+  </style>
 </head>
 
 <body class="bg-gray-100">
@@ -17,7 +23,7 @@
       </div>
     </div>
     <div>
-      <img src="{{ asset('images/logo-sapa.png') }}" alt="SAPA PMKS" class="h-16">
+      <img src="{{ asset('images/logo-sapa.png') }}" alt="SAPA PMKS" class="h-20">
     </div>
   </header>
 
@@ -60,14 +66,16 @@
         <div id="step1" class="form-step">
           <h3 class="text-lg font-bold text-gray-800 mb-4">1. Data Diri Terlapor</h3>
           <div class="mb-4">
-            <label for="nama" class="block text-gray-700 text-sm font-bold mb-2">Nama</label>
+            <label for="nama" class="block text-gray-700 text-sm font-bold mb-2">Nama <span
+                class="text-red-500">*</span></label>
             <input type="text" id="nama" name="nama" value="{{ old('nama') }}"
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('nama') border-red-500 @enderror"
               required>
             @error('nama')<p class="text-red-500 text-xs italic">{{ $message }}</p>@enderror
           </div>
           <div class="mb-4">
-            <label for="jenis_kelamin" class="block text-gray-700 text-sm font-bold mb-2">Jenis Kelamin</label>
+            <label for="jenis_kelamin" class="block text-gray-700 text-sm font-bold mb-2">Jenis Kelamin <span
+                class="text-red-500">*</span></label>
             <select id="jenis_kelamin" name="jenis_kelamin"
               class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('jenis_kelamin') border-red-500 @enderror"
               required>
@@ -78,15 +86,16 @@
             @error('jenis_kelamin')<p class="text-red-500 text-xs italic">{{ $message }}</p>@enderror
           </div>
           <div class="mb-4">
-            <label for="nik" class="block text-gray-700 text-sm font-bold mb-2">NIK</label>
-            <input type="text" id="nik" name="nik" value="{{ old('nik') }}"
+            <label for="nik" class="block text-gray-700 text-sm font-bold mb-2">NIK <span
+                class="text-red-500">*</span></label>
+            <input type="text" id="nik" name="nik" value="{{ old('nik') }}" maxlength="16"
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('nik') border-red-500 @enderror"
               required>
             @error('nik')<p class="text-red-500 text-xs italic">{{ $message }}</p>@enderror
           </div>
           <div class="mb-4">
             <label for="nomor_kk" class="block text-gray-700 text-sm font-bold mb-2">Nomor KK</label>
-            <input type="text" id="nomor_kk" name="nomor_kk" value="{{ old('nomor_kk') }}"
+            <input type="text" id="nomor_kk" name="nomor_kk" value="{{ old('nomor_kk') }}" maxlength="16"
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('nomor_kk') border-red-500 @enderror">
             @error('nomor_kk')<p class="text-red-500 text-xs italic">{{ $message }}</p>@enderror
           </div>
@@ -116,7 +125,7 @@
           </div>
           <div class="mb-4">
             <label for="alamat_ktp" class="block text-gray-700 text-sm font-bold mb-2">Alamat Lengkap Sesuai
-              KTP</label>
+              KTP <span class="text-red-500">*</span></label>
             <textarea id="alamat_ktp" name="alamat_ktp" rows="3"
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('alamat_ktp') border-red-500 @enderror"
               required>{{ old('alamat_ktp') }}</textarea>
@@ -138,14 +147,16 @@
         <div id="step2" class="form-step hidden">
           <h3 class="text-lg font-bold text-gray-800 mb-4">2. Data Pelapor & Detail Pengaduan</h3>
           <div class="mb-4">
-            <label for="nama_pelapor" class="block text-gray-700 text-sm font-bold mb-2">Nama Pelapor</label>
+            <label for="nama_pelapor" class="block text-gray-700 text-sm font-bold mb-2">Nama Pelapor <span
+                class="text-red-500">*</span></label>
             <input type="text" id="nama_pelapor" name="nama_pelapor" value="{{ old('nama_pelapor') }}"
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('nama_pelapor') border-red-500 @enderror"
               required>
             @error('nama_pelapor')<p class="text-red-500 text-xs italic">{{ $message }}</p>@enderror
           </div>
           <div class="mb-4">
-            <label for="nomor_hp_pelapor" class="block text-gray-700 text-sm font-bold mb-2">Nomor HP Pelapor</label>
+            <label for="nomor_hp_pelapor" class="block text-gray-700 text-sm font-bold mb-2">Nomor HP Pelapor <span
+                class="text-red-500">*</span></label>
             <input type="text" id="nomor_hp_pelapor" name="nomor_hp_pelapor" value="{{ old('nomor_hp_pelapor') }}"
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('nomor_hp_pelapor') border-red-500 @enderror"
               required>
@@ -167,7 +178,7 @@
 
           <div class="mb-4">
             <label for="jenis_pmks" class="block text-gray-700 text-sm font-bold mb-2">Jenis PMKS yang di
-              Laporkan</label>
+              Laporkan <span class="text-red-500">*</span></label>
             <div class="relative">
               <select id="jenis_pmks" name="jenis_pmks"
                 class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline appearance-none pr-8 @error('jenis_pmks') border-red-500 @enderror"
@@ -191,7 +202,8 @@
           </div>
 
           <div class="mb-4">
-            <label for="isi_aduan" class="block text-gray-700 text-sm font-bold mb-2">Isi Aduan</label>
+            <label for="isi_aduan" class="block text-gray-700 text-sm font-bold mb-2">Isi Aduan <span
+                class="text-red-500">*</span></label>
             <textarea id="isi_aduan" name="isi_aduan" rows="5"
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('isi_aduan') border-red-500 @enderror"
               required>{{ old('isi_aduan') }}</textarea>
@@ -200,7 +212,7 @@
 
           <div class="mb-4">
             <label for="jenis_bantuan" class="block text-gray-700 text-sm font-bold mb-2">Jenis Bantuan Yang di
-              Butuhkan</label>
+              Butuhkan <span class="text-red-500">*</span></label>
             <div class="relative">
               <select id="jenis_bantuan" name="jenis_bantuan"
                 class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline appearance-none pr-8 @error('jenis_bantuan') border-red-500 @enderror"
@@ -312,7 +324,7 @@
         if (nik.value.length !== 16 && nik.hasAttribute('required')) {
           nik.classList.add('border-red-500');
           isValidStep1 = false;
-          alert('NIK harus 16 digit.'); // Atau tampilkan pesan error yang lebih baik
+          alert('NIK harus 16 digit.');
         }
 
         if (isValidStep1) {
