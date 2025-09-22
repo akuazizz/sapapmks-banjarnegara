@@ -192,12 +192,6 @@
                                 </div>
                             @endforeach
                         </div>
-                        <div class="mt-8 text-center">
-                            <button type="button"
-                                class="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out">
-                                Unduh Bukti Tracking
-                            </button>
-                        </div>
                     </div>
                 @else
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4" role="alert">

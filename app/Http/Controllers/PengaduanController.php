@@ -6,6 +6,7 @@ use App\Models\Pengaduan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon; // Tambahkan ini
+use Illuminate\Support\Facades\Mail;
 
 class PengaduanController extends Controller
 {
@@ -48,13 +49,27 @@ class PengaduanController extends Controller
 
         // Tambahkan status default
         $validatedData['status'] = 'Diterima'; // Ubah dari 'Menunggu Diproses' agar sesuai dengan Figma
+        $validatedData['tanggal_laporan'] = Carbon::now(); // Pastikan tanggal laporan terisi dengan waktu sekarang
 
-        // Buat pengaduan baru
+        // Buat pengaduan baru (tanpa kode pengaduan dulu)
         $pengaduan = Pengaduan::create($validatedData);
 
-        // Tambahkan kode pengaduan
-        $pengaduan->kode_pengaduan = 'PMKS-' . date('Y') . '-' . str_pad($pengaduan->id, 5, '0', STR_PAD_LEFT);
-        $pengaduan->save();
+        // --- PERBAIKAN DI SINI ---
+        // GENERATE KODE PENGADUAN DENGAN FORMAT STRIP (-) AGAR URL-FRIENDLY
+        $tanggalHariIni = Carbon::now()->format('d-m-Y'); // <<< UBAH DARI 'd/m/Y' MENJADI 'd-m-Y'
+        $prefix = 'PMKS-' . $tanggalHariIni . '-';
+
+        // Hitung jumlah pengaduan yang dibuat hari ini
+        $countToday = Pengaduan::whereDate('created_at', Carbon::today())->count();
+        $nomorUrut = str_pad($countToday, 3, '0', STR_PAD_LEFT);
+
+        $pengaduan->kode_pengaduan = $prefix . $nomorUrut;
+        $pengaduan->save(); // Simpan kembali untuk memperbarui kode_pengaduan
+
+        // KIRIM EMAIL KE PELAPOR
+        if ($pengaduan->email_pelapor) {
+            Mail::to($pengaduan->email_pelapor)->send(new \App\Mail\PengaduanSubmitted($pengaduan));
+        }
 
         // Redirect ke halaman sukses dengan data pengaduan yang sudah lengkap
         return redirect()->route('pengaduan.success', ['kode' => $pengaduan->kode_pengaduan]);
@@ -100,7 +115,8 @@ class PengaduanController extends Controller
         // Status Diterima (selalu ada)
         $riwayat[] = [
             'status' => 'Diterima',
-            'tanggal' => $createdAt->format('d September Y, H:i'), // Contoh tanggal dari Figma
+            // Gunakan format yang benar dan tambahkan zona waktu
+            'tanggal' => $createdAt->translatedFormat('d F Y, H:i'),
             'deskripsi' => 'Pengaduan diterima oleh admin',
             'active' => true // Ini adalah status pertama yang selalu aktif
         ];
@@ -109,7 +125,7 @@ class PengaduanController extends Controller
         if (in_array($pengaduan->status, ['Diversifikasi', 'Diproses', 'Selesai'])) {
             $riwayat[] = [
                 'status' => 'Diversifikasi',
-                'tanggal' => $createdAt->copy()->addDay()->format('d September Y, H:i'), // Contoh 1 hari setelah diterima
+                'tanggal' => $createdAt->copy()->addDay()->translatedFormat('d F Y, H:i'),
                 'deskripsi' => 'Pengaduan sedang diverifikasi',
                 'active' => in_array($pengaduan->status, ['Diversifikasi', 'Diproses', 'Selesai'])
             ];
@@ -119,7 +135,7 @@ class PengaduanController extends Controller
         if (in_array($pengaduan->status, ['Diproses', 'Selesai'])) {
             $riwayat[] = [
                 'status' => 'Diproses',
-                'tanggal' => $createdAt->copy()->addDays(2)->format('d September Y, H:i'), // Contoh 2 hari setelah diterima
+                'tanggal' => $createdAt->copy()->addDays(2)->translatedFormat('d F Y, H:i'),
                 'deskripsi' => 'Pengaduan sedang diproses',
                 'active' => in_array($pengaduan->status, ['Diproses', 'Selesai'])
             ];
@@ -129,15 +145,15 @@ class PengaduanController extends Controller
         if ($pengaduan->status == 'Selesai') {
             $riwayat[] = [
                 'status' => 'Selesai',
-                'tanggal' => $createdAt->copy()->addDays(3)->format('d September Y, H:i'), // Contoh 3 hari setelah diterima
+                'tanggal' => $createdAt->copy()->addDays(3)->translatedFormat('d F Y, H:i'),
                 'deskripsi' => 'Selesai',
                 'active' => true // Status selesai selalu aktif jika tercapai
             ];
-        } else if ($pengaduan->status == 'Diterima' || $pengaduan->status == 'Menunggu Diproses') {
-            // Jika status masih Diterima, tambahkan placeholder untuk status selanjutnya
+        } else {
+            // Jika status masih Diterima atau Menunggu Diproses, tambahkan placeholder
             $riwayat[] = [
                 'status' => 'Diversifikasi',
-                'tanggal' => null, // Belum ada tanggal
+                'tanggal' => null,
                 'deskripsi' => 'Menunggu diverifikasi',
                 'active' => false
             ];
@@ -154,11 +170,6 @@ class PengaduanController extends Controller
                 'active' => false
             ];
         }
-
-
-        // Ini adalah contoh sederhana. Di aplikasi nyata, Anda akan memiliki kolom `status_id`
-        // dan tabel `status_logs` yang menyimpan timestamp dan status_id setiap kali status berubah.
-        // Kemudian Anda akan mengambil data dari `status_logs` dan mengurutkannya.
 
         return $riwayat;
     }
