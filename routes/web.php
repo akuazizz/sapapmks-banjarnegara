@@ -35,11 +35,25 @@ Route::get('/pengaduan/detail/{kode}', [PengaduanController::class, 'detailLapor
 Route::get('/login', [DashboardController::class, 'login'])->name('login');
 Route::post('/login', [DashboardController::class, 'authenticate']);
 
-Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
-  Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
-  Route::post('/logout', [DashboardController::class, 'logout'])->name('admin.logout');
+Route::middleware(['auth', 'is_admin'])
+  ->prefix('admin')
+  ->name('admin.') // <-- TAMBAH BARIS INI
+  ->group(function () {
 
-  Route::get('/pengaduan', [PengaduanAdminController::class, 'index'])->name('admin.pengaduan.index');
-  Route::get('/pengaduan/{pengaduan}/edit', [PengaduanAdminController::class, 'edit'])->name('admin.pengaduan.edit');
-  Route::put('/pengaduan/{pengaduan}', [PengaduanAdminController::class, 'update'])->name('admin.pengaduan.update');
-});
+    // Semua route di dalam group ini akan memiliki prefix 'admin/' dan nama diawali 'admin.'
+
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard'); // Nama rute jadi 'admin.dashboard'
+    Route::post('/logout', [DashboardController::class, 'logout'])->name('logout'); // Nama rute jadi 'admin.logout'
+
+    // Rute Pengaduan:
+    Route::get('/pengaduan', [PengaduanAdminController::class, 'index'])->name('pengaduan.index');
+    Route::get('/pengaduan/{pengaduan}/edit', [PengaduanAdminController::class, 'edit'])->name('pengaduan.edit');
+    Route::put('/pengaduan/{pengaduan}', [PengaduanAdminController::class, 'update'])->name('pengaduan.update');
+
+    // Rute Export Excel BARU (Perhatikan: nama rute sekarang hanya perlu 'pengaduan.export.excel')
+    Route::get('pengaduan/export/excel', [App\Http\Controllers\Admin\PengaduanAdminController::class, 'exportExcel'])
+      ->name('pengaduan.export.excel');
+
+    // Rute Pengguna
+    Route::get('/pengguna', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('pengguna.index');
+  });

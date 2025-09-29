@@ -36,7 +36,8 @@ class Pengaduan extends Model
         'kondisi_sosial_pmks',
         'foto_pmks_path',
         'status',
-        'tanggal_laporan'
+        'tanggal_laporan',
+        'alasan_penolakan',
     ];
 
     // Jika Anda ingin menonaktifkan created_at dan updated_at, Anda bisa:
