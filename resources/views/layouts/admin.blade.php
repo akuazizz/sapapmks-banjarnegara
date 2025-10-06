@@ -20,7 +20,7 @@
       background-color: rgba(255, 255, 255, 0.95);
       border-radius: 1rem;
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-                  0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
   </style>
 </head>
@@ -28,15 +28,15 @@
 <body class="min-h-screen">
 
   <!-- HEADER -->
-  <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-8 py-4">
-    <!-- Logo DINSOS kiri -->
+  <header class="absolute top-0 left-0 w-full flex justify-between items-start p-8">
     <div class="flex items-center space-x-3">
-      <img src="{{ asset('images/logo-dinsos.png') }}" alt="Logo DINSOS" class="h-16">
+      <img src="{{ asset('images/logo-dinsos.png') }}" alt="DINSOS PPPA" class="h-16">
+      <div class="text-left leading-tight text-gray-900">
+      </div>
     </div>
-
-    <!-- Logo SAPA kanan -->
-    <div class="text-right text-white">
-      <img src="{{ asset('images/logo-sapa.png') }}" alt="Logo SAPA" class="h-16 mx-auto">
+    <div>
+      <img src="{{ asset('images/logo-sapa.png') }}" alt="SAPA PMKS" class="h-20">
+    </div>
   </header>
 
   <!-- MAIN CONTENT -->
