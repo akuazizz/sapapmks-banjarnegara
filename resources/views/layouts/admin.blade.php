@@ -40,10 +40,8 @@
   </header>
 
   <!-- MAIN CONTENT -->
-  <main class="p-8 pt-32"> <!-- ditambah pt-32 supaya konten turun -->
-    <div class="admin-content p-6 md:p-10">
-      @yield('content')
-    </div>
+  <main class="p-8 pt-32">
+    @yield('content')
   </main>
 
   <!-- LOGOUT MODAL -->
