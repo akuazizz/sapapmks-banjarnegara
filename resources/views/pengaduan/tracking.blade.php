@@ -83,23 +83,32 @@
         </p>
 
         <form action="{{ route('pengaduan.tracking') }}" method="GET" class="max-w-xl mx-auto mb-12">
-            <div class="relative">
-                <input type="text" name="kode_pengaduan" placeholder="Masukkan Kode Pengaduan Anda"
-                    value="{{ request('kode_pengaduan') }}"
-                    class="w-full border border-gray-300 rounded-lg pl-4 pr-10 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent">
-                <button type="submit" class="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600 hover:text-blue-700"
-                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
-                    </svg>
-                </button>
-            </div>
-            <button type="submit"
-                class="mt-6 bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out">
-                Cari
-            </button>
-        </form>
+    <div class="relative mb-6">
+        <input type="text" name="kode_pengaduan" placeholder="Masukkan Kode Pengaduan Anda"
+            value="{{ request('kode_pengaduan') }}"
+            class="w-full border border-gray-300 rounded-lg pl-4 pr-10 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+        <button type="submit" class="absolute inset-y-0 right-0 flex items-center pr-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600 hover:text-blue-700"
+                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
+            </svg>
+        </button>
+    </div>
+
+    {{-- Tombol aksi sejajar --}}
+    <div class="flex flex-col sm:flex-row justify-center items-center gap-3">
+        <a href="{{ url('/') }}"
+            class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out w-full sm:w-auto text-center">
+            Kembali
+        </a>
+
+        <button type="submit"
+            class="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out w-full sm:w-auto">
+            Cari
+        </button>
+    </div>
+</form>
 
         {{-- Hasil Tracking --}}
         @if(request()->has('kode_pengaduan') && request('kode_pengaduan') != '')
