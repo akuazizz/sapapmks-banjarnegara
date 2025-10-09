@@ -6,9 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detail Laporan Pengaduan - {{ $pengaduan->kode_pengaduan }}</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+        body {
+            /* Pastikan path ke gambar Anda benar menggunakan fungsi asset() */
+            background-image: url("{{ asset('images/Background.png') }}");
+            background-size: cover; /* Untuk menutupi seluruh layar */
+            background-attachment: fixed; /* Agar gambar tetap saat di-scroll */
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+    </style>
 </head>
 
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen flex items-center justify-center p-4">
 
   <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-3xl mx-auto relative max-h-[90vh] overflow-y-auto">
     <h3 class="text-2xl font-extrabold mb-6 text-center text-blue-900 border-b pb-2">DETAIL LAPORAN</h3>

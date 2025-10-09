@@ -70,6 +70,8 @@
       document.getElementById('logoutModal').classList.toggle('hidden');
     }
   </script>
+
+  @yield('scripts')
 </body>
 
 </html>

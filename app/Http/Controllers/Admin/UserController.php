@@ -9,21 +9,22 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     /**
-     * Menampilkan daftar pengguna (admin)
+     * Menampilkan daftar pengguna (pelapor/biasa)
      */
     public function index(Request $request)
     {
-        $query = User::orderBy('name', 'asc');
+        // UBAH: Hanya ambil pengguna yang is_admin = 0 (Pelapor/User Biasa)
+        $query = User::where('is_admin', 0)->orderBy('name', 'asc');
 
         // Filter Pencarian
         if ($request->filled('search')) {
             $searchTerm = $request->search;
-            $query->where('name', 'like', '%' . $searchTerm . '%')
-                ->orWhere('email', 'like', '%' . $searchTerm . '%');
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('email', 'like', '%' . $searchTerm . '%');
+            });
         }
 
-        // Ambil semua pengguna, atau jika Anda hanya ingin menampilkan pengguna yang bukan admin, gunakan ->where('is_admin', 0)
-        // Saat ini, kita tampilkan semua, karena semua yang login adalah Admin/User internal.
         $users = $query->get();
 
         return view('admin.pengguna.index', compact('users'));

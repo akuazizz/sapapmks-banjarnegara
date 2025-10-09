@@ -28,7 +28,8 @@
 
     </div>
 
-    <form method="GET" action="{{ route('admin.pengaduan.index') }}"
+    {{-- TAMBAHKAN ID FILTER FORM UNTUK JS --}}
+    <form method="GET" action="{{ route('admin.pengaduan.index') }}" id="filterForm"
       class="bg-white p-6 rounded-xl shadow-lg mb-6 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 items-center">
 
       <div class="relative w-full md:w-2/5">
@@ -59,7 +60,8 @@
           value="{{ request('tanggal') }}">
       </div>
 
-      <button type="submit" class="hidden"></button>
+      {{-- HAPUS TOMBOL HIDDEN: submitForm() akan dihandle oleh JS --}}
+      {{-- <button type="submit" class="hidden"></button> --}}
     </form>
 
     <div class="bg-white rounded-xl shadow-lg overflow-x-auto">
@@ -75,12 +77,23 @@
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
           @forelse ($pengaduans as $pengaduan)
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">{{ $pengaduan->kode_pengaduan }}
+            {{-- LOGIKA PENANDA BARU PADA TR DAN TD --}}
+            @php
+              // Asumsi "BARU" adalah status 'Diterima' (sesuai DashboardController)
+              $isNew = $pengaduan->status === 'Diterima' || $pengaduan->status === 'Menunggu Diproses';
+              $rowClass = $isNew ? 'bg-blue-50 hover:bg-blue-100 transition duration-150' : 'hover:bg-gray-50';
+            @endphp
+            <tr class="{{ $rowClass }}">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
+                {{ $pengaduan->kode_pengaduan }}
+                @if ($isNew)
+                  <span class="ml-2 px-2 py-0.5 text-xs font-bold text-white bg-red-500 rounded-full">BARU</span>
+                @endif
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $pengaduan->nama_pelapor }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                {{ \Carbon\Carbon::parse($pengaduan->tanggal_laporan)->translatedFormat('d/m/Y') }}</td>
+                {{ \Carbon\Carbon::parse($pengaduan->created_at)->translatedFormat('d/m/Y') }}
+              </td>
               <td class="px-6 py-4 whitespace-nowrap text-center">
                 {!! generateStatusBadge($pengaduan->status) !!}
               </td>
@@ -103,6 +116,39 @@
     </div>
   </div>
 
+@endsection
+
+{{-- BAGIAN JS BARU UNTUK INSTANT FILTER --}}
+@section('scripts')
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const filterForm = document.getElementById('filterForm');
+      const searchInput = filterForm.querySelector('input[name="search"]');
+      const statusSelect = filterForm.querySelector('select[name="status"]');
+      const tanggalInput = filterForm.querySelector('input[name="tanggal"]');
+      let searchTimeout;
+
+      // Fungsi untuk mengajukan form
+      const submitForm = () => {
+        filterForm.submit();
+      };
+
+      // 1. Listener untuk Status dan Tanggal (langsung submit saat berubah)
+      statusSelect.addEventListener('change', submitForm);
+      tanggalInput.addEventListener('change', submitForm);
+
+      // 2. Listener untuk Pencarian (menggunakan debounce untuk menghindari terlalu banyak request)
+      searchInput.addEventListener('input', function () {
+        // Hapus timeout sebelumnya
+        clearTimeout(searchTimeout);
+
+        // Set timeout baru
+        searchTimeout = setTimeout(() => {
+          submitForm();
+        }, 500); // Tunggu 500ms (0.5 detik) setelah user berhenti mengetik
+      });
+    });
+  </script>
 @endsection
 
 @php
