@@ -15,14 +15,16 @@
 </head>
 
 <body class="min-h-screen">
-  <header class="absolute top-0 left-0 w-full flex justify-between items-start p-8">
+
+  <header class="absolute top-0 left-0 w-full flex justify-between items-center p-4 md:p-8">
     <div class="flex items-center space-x-3">
-      <img src="{{ asset('images/logo-dinsos.png') }}" alt="DINSOS PPPA" class="h-16">
+      <img src="{{ asset('images/logo-dinsos.png') }}" alt="DINSOS PPPA" class="h-12 md:h-16 object-contain">
       <div class="text-left leading-tight text-gray-900">
       </div>
     </div>
+
     <div>
-      <img src="{{ asset('images/logo-sapa.png') }}" alt="SAPA PMKS" class="h-20">
+      <img src="{{ asset('images/logo-sapa.png') }}" alt="SAPA PMKS" class="h-12 md:h-20 object-contain">
     </div>
   </header>
 
@@ -49,6 +51,7 @@
           CEK TRACKING
         </a>
       </div>
+      
     </div>
   </main>
 
