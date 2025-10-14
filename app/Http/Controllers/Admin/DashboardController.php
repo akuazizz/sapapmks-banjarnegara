@@ -73,11 +73,14 @@ class DashboardController extends Controller
 
         // 3. Siapkan data untuk Chart (sesuai status yang ingin ditampilkan di chart)
         $chartData = [
-            'Diversifikasi' => $stats['Diversifikasi'],
-            'Diterima'      => $stats['Diterima'], // Total semua
-            'Ditolak'       => $stats['Ditolak'],
-            'Selesai'       => $stats['Selesai'],
+            'Laporan Baru'   => $stats['Laporan Baru'],
+            'Diversifikasi'  => $stats['Diversifikasi'],
+            'Diproses'       => $stats['Diproses'],
+            'Ditolak'        => $stats['Ditolak'],
+            'Diterima'       => $stats['Diterima'],
+            'Selesai'        => $stats['Selesai'],
         ];
+
 
         return view('admin.dashboard', compact('stats', 'notifikasi', 'chartData'));
     }

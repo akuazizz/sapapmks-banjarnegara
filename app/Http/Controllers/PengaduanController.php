@@ -112,62 +112,31 @@ class PengaduanController extends Controller
         $riwayat = [];
         $createdAt = Carbon::parse($pengaduan->created_at);
 
-        // Status Diterima (selalu ada)
-        $riwayat[] = [
-            'status' => 'Diterima',
-            // Gunakan format yang benar dan tambahkan zona waktu
-            'tanggal' => $createdAt->translatedFormat('d F Y, H:i'),
-            'deskripsi' => 'Pengaduan diterima oleh admin',
-            'active' => true // Ini adalah status pertama yang selalu aktif
+        $steps = [
+            'Diterima' => 'Pengaduan diterima oleh admin',
+            'Diversifikasi' => 'Pengaduan sedang diverifikasi',
+            'Diproses' => 'Pengaduan sedang diproses',
+            'Selesai' => 'Pengaduan selesai ditindaklanjuti',
         ];
 
-        // Status Diversifikasi (jika pengaduan sudah mencapai status ini atau lebih)
-        if (in_array($pengaduan->status, ['Diversifikasi', 'Diproses', 'Selesai'])) {
-            $riwayat[] = [
-                'status' => 'Diversifikasi',
-                'tanggal' => $createdAt->copy()->addDay()->translatedFormat('d F Y, H:i'),
-                'deskripsi' => 'Pengaduan sedang diverifikasi',
-                'active' => in_array($pengaduan->status, ['Diversifikasi', 'Diproses', 'Selesai'])
-            ];
+        // Jika status Ditolak, langsung return
+        if ($pengaduan->status == 'Ditolak') {
+            return [[
+                'status' => 'Ditolak',
+                'tanggal' => $createdAt->translatedFormat('d F Y, H:i'),
+                'deskripsi' => 'Pengaduan ditolak. Alasan: ' . ($pengaduan->alasan_penolakan ?? '-'),
+                'active' => true,
+            ]];
         }
 
-        // Status Diproses (jika pengaduan sudah mencapai status ini atau lebih)
-        if (in_array($pengaduan->status, ['Diproses', 'Selesai'])) {
-            $riwayat[] = [
-                'status' => 'Diproses',
-                'tanggal' => $createdAt->copy()->addDays(2)->translatedFormat('d F Y, H:i'),
-                'deskripsi' => 'Pengaduan sedang diproses',
-                'active' => in_array($pengaduan->status, ['Diproses', 'Selesai'])
-            ];
-        }
+        $currentStatusIndex = array_search($pengaduan->status, array_keys($steps));
 
-        // Status Selesai (jika pengaduan sudah selesai)
-        if ($pengaduan->status == 'Selesai') {
+        foreach ($steps as $key => $desc) {
             $riwayat[] = [
-                'status' => 'Selesai',
-                'tanggal' => $createdAt->copy()->addDays(3)->translatedFormat('d F Y, H:i'),
-                'deskripsi' => 'Selesai',
-                'active' => true // Status selesai selalu aktif jika tercapai
-            ];
-        } else {
-            // Jika status masih Diterima atau Menunggu Diproses, tambahkan placeholder
-            $riwayat[] = [
-                'status' => 'Diversifikasi',
-                'tanggal' => null,
-                'deskripsi' => 'Menunggu diverifikasi',
-                'active' => false
-            ];
-            $riwayat[] = [
-                'status' => 'Diproses',
-                'tanggal' => null,
-                'deskripsi' => 'Menunggu diproses',
-                'active' => false
-            ];
-            $riwayat[] = [
-                'status' => 'Selesai',
-                'tanggal' => null,
-                'deskripsi' => 'Menunggu selesai',
-                'active' => false
+                'status' => $key,
+                'tanggal' => $createdAt->copy()->addDays(array_search($key, array_keys($steps)))->translatedFormat('d F Y, H:i'),
+                'deskripsi' => $desc,
+                'active' => array_search($key, array_keys($steps)) <= $currentStatusIndex
             ];
         }
 

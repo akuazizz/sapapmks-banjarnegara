@@ -43,10 +43,12 @@
         <div class="w-full md:w-1/2 p-4">
           @php
             $legendColors = [
-              'Diversifikasi' => 'blue',
-              'Diterima' => 'green',
-              'Ditolak' => 'red',
-              'Selesai' => 'purple',
+              'Laporan Baru' => '#2563eb', // biru tua
+              'Diversifikasi' => '#6b7280', // abu
+              'Diproses' => '#facc15', // kuning
+              'Ditolak' => '#dc2626', // merah
+              'Diterima' => '#22c55e', // hijau
+              'Selesai' => '#6366f1', // ungu
             ];
           @endphp
           @foreach($chartData as $status => $count)
@@ -146,10 +148,12 @@
         datasets: [{
           data: Object.values(statusCounts),
           backgroundColor: [
-            'blue', // Diversifikasi
-            'green', // Diterima
-            'red', // Ditolak
-            'purple' // Selesai
+            '#2563eb', // Laporan Baru
+            '#6b7280', // Diversifikasi
+            '#facc15', // Diproses
+            '#dc2626', // Ditolak
+            '#22c55e', // Diterima
+            '#6366f1'  // Selesai
           ],
           hoverOffset: 4
         }]
@@ -157,19 +161,13 @@
       options: {
         responsive: true,
         plugins: {
-          legend: {
-            display: false // Legenda ditampilkan secara manual di samping
-          },
+          legend: { display: false },
           tooltip: {
             callbacks: {
               label: function (context) {
                 let label = context.label || '';
-                if (label) {
-                  label += ': ';
-                }
-                if (context.parsed !== null) {
-                  label += context.parsed;
-                }
+                if (label) label += ': ';
+                if (context.parsed !== null) label += context.parsed;
                 return label;
               }
             }

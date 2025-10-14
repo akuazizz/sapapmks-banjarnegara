@@ -17,7 +17,10 @@
         <h1 class="text-2xl font-bold text-gray-800">Daftar Pengaduan</h1>
       </div>
 
-      <a href="{{ route('admin.pengaduan.export.excel') }}"
+      <a href="{{ route('admin.pengaduan.export.excel', [
+    'status' => request('status'),
+    'tanggal' => request('tanggal')
+  ]) }}"
         class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-150 shadow-md flex items-center space-x-2">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -152,30 +155,32 @@
 @endsection
 
 @php
-  // Helper function untuk generate badge status dengan warna yang berbeda
   function generateStatusBadge($status)
   {
     switch ($status) {
-      case 'Diterima':
-      case 'Laporan Baru': // Menggunakan Laporan Baru untuk status awal
-        $color = 'bg-green-500';
+      case 'Laporan Baru':
+        $color = 'bg-red-600'; // Merah untuk laporan baru
         break;
       case 'Diversifikasi':
-        $color = 'bg-gray-500';
+        $color = 'bg-gray-500'; // Abu untuk status diversifikasi
         break;
       case 'Diproses':
-        $color = 'bg-yellow-500';
-        break;
-      case 'Selesai':
-        $color = 'bg-blue-600';
+        $color = 'bg-yellow-500'; // Kuning untuk status proses
         break;
       case 'Ditolak':
-        $color = 'bg-red-600';
+        $color = 'bg-red-600'; // Merah tua untuk ditolak
+        break;
+      case 'Diterima':
+        $color = 'bg-green-500'; // Hijau untuk diterima
+        break;
+      case 'Selesai':
+        $color = 'bg-blue-600'; // Biru untuk selesai
         break;
       default:
-        $color = 'bg-purple-500';
+        $color = 'bg-purple-500'; // fallback
         break;
     }
+
     return '<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full text-white ' . $color . '">' . strtoupper($status) . '</span>';
   }
 @endphp

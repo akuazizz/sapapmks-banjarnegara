@@ -6,19 +6,35 @@ use App\Models\Pengaduan;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Illuminate\Support\Collection;
 
 class PengaduanExport implements FromCollection, WithHeadings, ShouldAutoSize
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
+    protected $status;
+    protected $tanggal;
+
+    // Tambahkan constructor untuk menerima filter
+    public function __construct($status = null, $tanggal = null)
+    {
+        $this->status = $status;
+        $this->tanggal = $tanggal;
+    }
+
     public function collection()
     {
-        // Ambil semua data pengaduan
-        $pengaduans = Pengaduan::all();
+        $query = Pengaduan::query();
 
-        // Mapping data untuk kolom Excel yang rapi
+        // Jika filter status dikirim dan bukan "semua"
+        if ($this->status && $this->status !== 'semua') {
+            $query->where('status', $this->status);
+        }
+
+        // Jika filter tanggal dikirim
+        if ($this->tanggal) {
+            $query->whereDate('created_at', $this->tanggal);
+        }
+
+        $pengaduans = $query->get();
+
         return $pengaduans->map(function ($pengaduan) {
             return [
                 'Kode Pengaduan' => $pengaduan->kode_pengaduan,
@@ -26,22 +42,19 @@ class PengaduanExport implements FromCollection, WithHeadings, ShouldAutoSize
                 'Status' => $pengaduan->status,
                 'Jenis PMKS' => $pengaduan->jenis_pmks,
                 'Nama PMKS' => $pengaduan->nama,
-                'NIK PMKS' => $pengaduan->nik,
+                'NIK PMKS' => "'" . $pengaduan->nik, // agar tidak berubah jadi 3.304E+15
                 'Alamat Domisili' => $pengaduan->alamat_domisili,
                 'Jenis Bantuan' => $pengaduan->jenis_bantuan,
                 'Kondisi Ekonomi' => $pengaduan->kondisi_ekonomi_pmks,
                 'Kondisi Sosial' => $pengaduan->kondisi_sosial_pmks,
                 'Isi Aduan' => $pengaduan->isi_aduan,
                 'Nama Pelapor' => $pengaduan->nama_pelapor,
-                'HP Pelapor' => $pengaduan->nomor_hp_pelapor,
+                'HP Pelapor' => "'" . $pengaduan->nomor_hp_pelapor,
                 'Alasan Ditolak' => $pengaduan->alasan_penolakan ?? '-',
             ];
         });
     }
 
-    /**
-     * Header untuk kolom Excel
-     */
     public function headings(): array
     {
         return [

@@ -7,6 +7,7 @@ use App\Models\Pengaduan;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PengaduanExport;
+use Carbon\Carbon;
 
 class PengaduanAdminController extends Controller
 {
@@ -78,10 +79,13 @@ class PengaduanAdminController extends Controller
         return redirect()->route('admin.pengaduan.index')->with('success', 'Status pengaduan berhasil diperbarui.');
     }
 
-    public function exportExcel()
+    public function exportExcel(Request $request)
     {
-        $filename = 'data-pengaduan-pmks-' . now()->format('Ymd_His') . '.xlsx';
+        $status = $request->status;
+        $tanggal = $request->filled('tanggal')
+            ? Carbon::parse($request->tanggal)->format('Y-m-d')
+            : null;
 
-        return Excel::download(new PengaduanExport, $filename);
+        return Excel::download(new PengaduanExport($status, $tanggal), 'pengaduan.xlsx');
     }
 }
