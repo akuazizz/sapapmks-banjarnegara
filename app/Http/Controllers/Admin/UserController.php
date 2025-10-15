@@ -3,30 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Pengaduan;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    /**
-     * Menampilkan daftar pengguna (pelapor/biasa)
-     */
-    public function index(Request $request)
+    public function index()
     {
-        // UBAH: Hanya ambil pengguna yang is_admin = 0 (Pelapor/User Biasa)
-        $query = User::where('is_admin', 0)->orderBy('name', 'asc');
+        $users = Pengaduan::select('kode_pengaduan', 'nama_pelapor', 'email_pelapor', 'nomor_hp_pelapor')
+            ->orderBy('nama_pelapor', 'asc')
+            ->get();
 
-        // Filter Pencarian
-        if ($request->filled('search')) {
-            $searchTerm = $request->search;
-            $query->where(function ($q) use ($searchTerm) {
-                $q->where('name', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('email', 'like', '%' . $searchTerm . '%');
-            });
-        }
-
-        $users = $query->get();
-
-        return view('admin.pengguna.index', compact('users'));
+        return view('admin.pengguna.pelapor', compact('users'));
     }
 }
