@@ -114,7 +114,7 @@ class PengaduanController extends Controller
 
         $steps = [
             'Diterima' => 'Pengaduan diterima oleh admin',
-            'Diversifikasi' => 'Pengaduan sedang diverifikasi',
+            'Diverifikasi' => 'Pengaduan sedang diverifikasi',
             'Diproses' => 'Pengaduan sedang diproses',
             'Selesai' => 'Pengaduan selesai ditindaklanjuti',
         ];
