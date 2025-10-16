@@ -57,60 +57,92 @@
         ];
       @endphp
 
-{{-- Bagian Data PMKS --}}
-<p class="font-bold text-gray-800 text-base mb-3 mt-4">DATA PMKS</p>
-@foreach($dataPmks as $label => $value)
-  <div class="grid grid-cols-12 mb-1">
-    <span class="font-medium col-span-3">{{ $label }}</span>
-    <span class="col-span-1 text-center">:</span>
-    <span class="col-span-8 break-words">{{ $value ?? '-' }}</span>
-  </div>
-@endforeach
-
-{{-- Bagian Data Pelapor --}}
-<hr class="border-t-2 border-gray-200 mt-8 mb-3">
-<p class="font-bold text-gray-800 text-base mb-3">DATA PELAPOR</p>
-@foreach($dataPelapor as $label => $value)
-  <div class="grid grid-cols-12 mb-1">
-    <span class="font-medium col-span-3">{{ $label }}</span>
-    <span class="col-span-1 text-center">:</span>
-    <span class="col-span-8 break-words">{{ $value ?? '-' }}</span>
-  </div>
-@endforeach
-
-{{-- Bagian Detail Aduan --}}
-<hr class="border-t-2 border-gray-200 mt-8 mb-3">
-<p class="font-bold text-gray-800 text-base mb-3">DETAIL ADUAN</p>
-@foreach($dataAduan as $label => $value)
-  <div class="grid grid-cols-12 mb-1">
-    <span class="font-medium col-span-3">{{ $label }}</span>
-    <span class="col-span-1 text-center">:</span>
-    <span class="col-span-8 break-words">{{ $value ?? '-' }}</span>
-  </div>
-@endforeach
-
-{{-- Foto PMKS --}}
-<hr class="border-t-2 border-gray-200 mt-8 mb-3">
-<p class="font-bold text-gray-800 text-base mb-3">FOTO PMKS</p>
-@if($pengaduan->foto_pmks_path)
-  <div class="grid grid-cols-12 pt-2">
-    <span class="font-medium col-span-3">Foto PMKS</span>
-    <span class="col-span-1 text-center">:</span>
-    <span class="col-span-8">
-      <img src="{{ Storage::url($pengaduan->foto_pmks_path) }}" alt="Foto PMKS"
-        class="max-w-xs max-h-40 rounded-lg shadow-md mt-2">
-      <a href="{{ Storage::url($pengaduan->foto_pmks_path) }}" target="_blank"
-        class="text-blue-600 hover:underline text-xs mt-1 block">Lihat Gambar Penuh</a>
-    </span>
-  </div>
-@else
-  <div class="grid grid-cols-12 pt-2">
-    <span class="font-medium col-span-3">Foto PMKS</span>
-    <span class="col-span-1 text-center">:</span>
-    <span class="col-span-8 text-gray-500 italic">Tidak ada foto terlampir.</span>
-  </div>
-@endif
+{{-- DATA PMKS --}}
+<div class="flex items-center mb-3 mt-8">
+    <div class="w-2 h-6 bg-blue-900 mr-2 rounded"></div>
+    <h2 class="text-lg font-bold text-blue-900">DATA PMKS</h2>
 </div>
+<div class="bg-white p-4 rounded-lg shadow">
+    @if(isset($dataPmks) && is_iterable($dataPmks))
+        @foreach($dataPmks as $label => $value)
+            <div class="grid grid-cols-12 mb-1">
+                <span class="font-medium col-span-3">{{ $label }}</span>
+                <span class="col-span-1 text-center">:</span>
+                <span class="col-span-8 break-words">{{ $value ?? '-' }}</span>
+            </div>
+        @endforeach
+    @endif
+</div>
+
+{{-- DATA PELAPOR --}}
+<div class="flex items-center mb-3 mt-8">
+    <div class="w-2 h-6 bg-blue-900 mr-2 rounded"></div>
+    <h2 class="text-lg font-bold text-blue-900">DATA PELAPOR</h2>
+</div>
+<div class="bg-white p-4 rounded-lg shadow">
+    @if(isset($dataPelapor) && is_iterable($dataPelapor))
+        @foreach($dataPelapor as $label => $value)
+            <div class="grid grid-cols-12 mb-1">
+                <span class="font-medium col-span-3">{{ $label }}</span>
+                <span class="col-span-1 text-center">:</span>
+                <span class="col-span-8 break-words">{{ $value ?? '-' }}</span>
+            </div>
+        @endforeach
+    @endif
+</div>
+
+{{-- DETAIL ADUAN --}}
+<div class="flex items-center mb-3 mt-8">
+    <div class="w-2 h-6 bg-blue-900 mr-2 rounded"></div>
+    <h2 class="text-lg font-bold text-blue-900">DETAIL ADUAN</h2>
+</div>
+<div class="bg-white p-4 rounded-lg shadow">
+    @if(isset($dataAduan) && is_iterable($dataAduan))
+        @foreach($dataAduan as $label => $value)
+            <div class="grid grid-cols-12 mb-1">
+                <span class="font-medium col-span-3">{{ $label }}</span>
+                <span class="col-span-1 text-center">:</span>
+                <span class="col-span-8 break-words">{{ $value ?? '-' }}</span>
+            </div>
+        @endforeach
+    @endif
+</div>
+
+{{-- FOTO PMKS --}}
+<div class="flex items-center mb-3 mt-8">
+    <div class="w-2 h-6 bg-blue-900 mr-2 rounded"></div>
+    <h2 class="text-lg font-bold text-blue-900">FOTO PMKS</h2>
+</div>
+
+<div class="bg-white p-4 rounded-lg shadow text-center">
+    <img 
+        src="{{ asset('storage/'.$pengaduan->foto_pmks) }}" 
+        alt="Foto PMKS" 
+        class="rounded-md shadow-md mx-auto max-w-xs cursor-pointer transition-transform hover:scale-105"
+        onclick="openModal('{{ asset('storage/'.$pengaduan->foto_pmks) }}')"
+    >
+    <a 
+        href="javascript:void(0)" 
+        class="text-blue-900 hover:underline text-sm mt-2 block font-medium"
+        onclick="openModal('{{ asset('storage/'.$pengaduan->foto_pmks) }}')"
+    >
+        Lihat Lebih Besar
+    </a>
+</div>
+
+<!-- Modal Popup -->
+<div id="imageModal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
+    <div class="relative">
+        <button 
+            onclick="closeModal()" 
+            class="absolute top-2 right-2 text-white text-2xl font-bold hover:text-gray-300"
+        >
+            &times;
+        </button>
+        <img id="modalImage" src="" alt="Foto PMKS Besar" class="max-h-[90vh] max-w-[90vw] rounded-lg shadow-2xl">
+    </div>
+</div>
+
 
     {{-- Tombol Kembali --}}
     <div class="mt-8 pt-4 border-t text-center">
@@ -122,5 +154,13 @@
 
   </div>
 </body>
-
+<script>
+    function openModal(imageSrc) {
+        document.getElementById('modalImage').src = imageSrc;
+        document.getElementById('imageModal').classList.remove('hidden');
+    }
+    function closeModal() {
+        document.getElementById('imageModal').classList.add('hidden');
+    }
+</script>
 </html>
