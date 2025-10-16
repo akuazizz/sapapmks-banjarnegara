@@ -30,15 +30,19 @@ class Pengaduan extends Model
         'email_pelapor',
         'pekerjaan_pelapor',
         'jenis_pmks',
+        'jenis_pmks_lainnya',
         'isi_aduan',
         'jenis_bantuan',
+        'jenis_bantuan_lainnya',
         'kondisi_ekonomi_pmks',
         'kondisi_sosial_pmks',
         'foto_pmks_path',
         'status',
         'tanggal_laporan',
-        'alasan_penolakan',
+        'kode_pengaduan',
+        'alasan_penolakan'
     ];
+
 
     // Jika Anda ingin menonaktifkan created_at dan updated_at, Anda bisa:
     // public $timestamps = false;

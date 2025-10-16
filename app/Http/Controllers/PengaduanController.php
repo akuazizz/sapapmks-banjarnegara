@@ -17,7 +17,6 @@ class PengaduanController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi input
         $validatedData = $request->validate([
             'nama' => 'required|max:255',
             'jenis_kelamin' => 'required',
@@ -34,46 +33,44 @@ class PengaduanController extends Controller
             'email_pelapor' => 'nullable|email',
             'pekerjaan_pelapor' => 'nullable|max:255',
             'jenis_pmks' => 'required|max:255',
+            'jenis_pmks_lainnya' => 'nullable|max:255',
             'isi_aduan' => 'required',
             'jenis_bantuan' => 'required|max:255',
+            'jenis_bantuan_lainnya' => 'nullable|max:255',
             'kondisi_ekonomi_pmks' => 'nullable|max:255',
             'kondisi_sosial_pmks' => 'nullable|max:255',
             'foto_pmks' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Tangani upload foto
-        if ($request->hasFile('foto_pmks')) {
-            $path = $request->file('foto_pmks')->store('foto_pmks', 'public');
-            $validatedData['foto_pmks_path'] = $path;
+        // Gabungkan nilai "lainnya" jika dipilih
+        if ($request->jenis_pmks == 'Lainnya' && $request->filled('jenis_pmks_lainnya')) {
+            $validatedData['jenis_pmks'] = $request->jenis_pmks_lainnya;
+        }
+        if ($request->jenis_bantuan == 'Lainnya' && $request->filled('jenis_bantuan_lainnya')) {
+            $validatedData['jenis_bantuan'] = $request->jenis_bantuan_lainnya;
         }
 
-        // Tambahkan status default
-        $validatedData['status'] = 'Diterima'; // Ubah dari 'Menunggu Diproses' agar sesuai dengan Figma
-        $validatedData['tanggal_laporan'] = Carbon::now(); // Pastikan tanggal laporan terisi dengan waktu sekarang
+        // Upload foto jika ada
+        if ($request->hasFile('foto_pmks')) {
+            $validatedData['foto_pmks_path'] = $request->file('foto_pmks')->store('foto_pmks', 'public');
+        }
 
-        // Buat pengaduan baru (tanpa kode pengaduan dulu)
+        // Set default status dan tanggal
+        $validatedData['status'] = 'Diterima';
+        $validatedData['tanggal_laporan'] = now();
+
+        // Simpan pengaduan tanpa kode
         $pengaduan = Pengaduan::create($validatedData);
 
-        // --- PERBAIKAN DI SINI ---
-        // GENERATE KODE PENGADUAN DENGAN FORMAT STRIP (-) AGAR URL-FRIENDLY
-        $tanggalHariIni = Carbon::now()->format('d-m-Y'); // <<< UBAH DARI 'd/m/Y' MENJADI 'd-m-Y'
-        $prefix = 'PMKS-' . $tanggalHariIni . '-';
+        // Buat kode unik
+        $tanggalHariIni = now()->format('d-m-Y');
+        $countToday = Pengaduan::whereDate('created_at', now()->toDateString())->count();
+        $pengaduan->kode_pengaduan = 'PMKS-' . $tanggalHariIni . '-' . str_pad($countToday, 3, '0', STR_PAD_LEFT);
+        $pengaduan->save();
 
-        // Hitung jumlah pengaduan yang dibuat hari ini
-        $countToday = Pengaduan::whereDate('created_at', Carbon::today())->count();
-        $nomorUrut = str_pad($countToday, 3, '0', STR_PAD_LEFT);
-
-        $pengaduan->kode_pengaduan = $prefix . $nomorUrut;
-        $pengaduan->save(); // Simpan kembali untuk memperbarui kode_pengaduan
-
-        // KIRIM EMAIL KE PELAPOR
-        if ($pengaduan->email_pelapor) {
-            Mail::to($pengaduan->email_pelapor)->send(new \App\Mail\PengaduanSubmitted($pengaduan));
-        }
-
-        // Redirect ke halaman sukses dengan data pengaduan yang sudah lengkap
         return redirect()->route('pengaduan.success', ['kode' => $pengaduan->kode_pengaduan]);
     }
+
 
     public function tracking(Request $request)
     {
