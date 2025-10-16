@@ -217,7 +217,7 @@
                         @endif
                     </div>
                 </div>
-                @endforeachs
+                @endforeach
             </div>
         </div>
         @else
