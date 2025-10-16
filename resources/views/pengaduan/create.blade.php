@@ -31,7 +31,7 @@
   <main class="container mx-auto pt-32 pb-12 px-4">
     <div class="bg-white rounded-lg shadow-lg overflow-hidden max-w-3xl mx-auto">
       <div class="py-6 px-8 text-center bg-gray-50 border-b border-gray-200">
-        <h2 class="text-xl font-bold text-gray-800">Pusat Layanan Pengaduan Sosial Masyarakat</h2>
+        <h2 class="text-xl font-bold text-gray-800">Layanan Pengaduan Sosial Masyarakat</h2>
         <p class="text-gray-600">Wujudkan kesejahteraan bersama melalui laporan Anda</p>
       </div>
 
@@ -177,30 +177,40 @@
             @error('pekerjaan_pelapor')<p class="text-red-500 text-xs italic">{{ $message }}</p>@enderror
           </div>
 
-          <div class="mb-4">
-            <label for="jenis_pmks" class="block text-gray-700 text-sm font-bold mb-2">Jenis PMKS yang di
-              Laporkan <span class="text-red-500">*</span></label>
-            <div class="relative">
-              <select id="jenis_pmks" name="jenis_pmks"
-                class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline appearance-none pr-8 @error('jenis_pmks') border-red-500 @enderror"
-                required>
-                <option value="">Pilih Jenis PMKS</option>
-                <option value="Anak Terlantar" {{ old('jenis_pmks') == 'Anak Terlantar' ? 'selected' : '' }}>Anak
-                  Terlantar</option>
-                <option value="Lansia Terlantar" {{ old('jenis_pmks') == 'Lansia Terlantar' ? 'selected' : '' }}>
-                  Lansia
-                  Terlantar</option>
-                <option value="Difabel" {{ old('jenis_pmks') == 'Difabel' ? 'selected' : '' }}>Difabel</option>
-                <option value="Lainnya" {{ old('jenis_pmks') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
-              </select>
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                </svg>
-              </div>
-            </div>
-            @error('jenis_pmks')<p class="text-red-500 text-xs italic">{{ $message }}</p>@enderror
-          </div>
+         <div class="mb-4">
+  <label for="jenis_pmks" class="block text-gray-700 text-sm font-bold mb-2">
+    Jenis PMKS yang di Laporkan <span class="text-red-500">*</span>
+  </label>
+  <div class="relative">
+    <select id="jenis_pmks" name="jenis_pmks"
+      class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline appearance-none pr-8 @error('jenis_pmks') border-red-500 @enderror"
+      required
+      onchange="toggleLainnyaInputPMKS()">
+      <option value="" disabled selected>Pilih Jenis PMKS</option>
+      <option value="Korban bencana" {{ old('jenis_pmks') == 'Korban bencana' ? 'selected' : '' }}>Korban bencana</option>
+      <option value="Penyandang disabilitas" {{ old('jenis_pmks') == 'Penyandang disabilitas' ? 'selected' : '' }}>Penyandang disabilitas</option>
+      <option value="Fakir miskin" {{ old('jenis_pmks') == 'Fakir miskin' ? 'selected' : '' }}>Fakir miskin</option>
+      <option value="Lainnya" {{ old('jenis_pmks') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+    </select>
+    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+      </svg>
+    </div>
+  </div>
+  @error('jenis_pmks')<p class="text-red-500 text-xs italic">{{ $message }}</p>@enderror
+</div>
+
+<!-- Input tambahan untuk Lainnya -->
+<div id="pmks_lainnya_input" class="mb-4 hidden">
+  <label for="jenis_pmks_lainnya" class="block text-gray-700 text-sm font-bold mb-2">
+    Sebutkan Jenis PMKS Lainnya <span class="text-red-500">*</span>
+  </label>
+  <input type="text" id="jenis_pmks_lainnya" name="jenis_pmks_lainnya"
+    class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+    value="{{ old('jenis_pmks_lainnya') }}">
+</div>
+
 
           <div class="mb-4">
             <label for="isi_aduan" class="block text-gray-700 text-sm font-bold mb-2">Isi Aduan <span
@@ -212,48 +222,84 @@
           </div>
 
           <div class="mb-4">
-            <label for="jenis_bantuan" class="block text-gray-700 text-sm font-bold mb-2">Jenis Bantuan Yang di
-              Butuhkan <span class="text-red-500">*</span></label>
-            <div class="relative">
-              <select id="jenis_bantuan" name="jenis_bantuan"
-                class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline appearance-none pr-8 @error('jenis_bantuan') border-red-500 @enderror"
-                required>
-                <option value="">Pilih Jenis Bantuan</option>
-                <option value="Alat Bantu Gelandangan" {{ old('jenis_bantuan') == 'Alat Bantu Gelandangan' ? 'selected' : '' }}>Alat Bantu Gelandangan
-                </option>
-                <option value="Biaya Pengobatan Pengemis" {{ old('jenis_bantuan') == 'Biaya Pengobatan Pengemis' ? 'selected' : '' }}>Biaya Pengobatan
-                  Pengemis</option>
-                <option value="Rujukan Panti Disabilitas" {{ old('jenis_bantuan') == 'Rujukan Panti Disabilitas' ? 'selected' : '' }}>Rujukan Panti
-                  Disabilitas</option>
-                <option value="Permohonan Lainnya" {{ old('jenis_bantuan') == 'Permohonan Lainnya' ? 'selected' : '' }}>
-                  Permohonan Lainnya</option>
-              </select>
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                </svg>
-              </div>
-            </div>
-            @error('jenis_bantuan')<p class="text-red-500 text-xs italic">{{ $message }}</p>@enderror
-          </div>
+  <label for="jenis_bantuan" class="block text-gray-700 text-sm font-bold mb-2">
+    Jenis Bantuan Yang di Butuhkan <span class="text-red-500">*</span>
+  </label>
+  <div class="relative">
+    <select id="jenis_bantuan" name="jenis_bantuan"
+      class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline appearance-none pr-8 @error('jenis_bantuan') border-red-500 @enderror"
+      required
+      onchange="toggleLainnyaInput()">
+      <option value="" disabled selected>Pilih Jenis Bantuan</option>
+      <option value="Alat Bantu" {{ old('jenis_bantuan') == 'Alat Bantu' ? 'selected' : '' }}>Alat Bantu</option>
+      <option value="Biaya Pengobatan" {{ old('jenis_bantuan') == 'Biaya Pengobatan' ? 'selected' : '' }}>Biaya Pengobatan</option>
+      <option value="Rujukan Panti" {{ old('jenis_bantuan') == 'Rujukan Panti' ? 'selected' : '' }}>Rujukan Panti</option>
+      <option value="Lainnya" {{ old('jenis_bantuan') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+    </select>
+    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+      </svg>
+    </div>
+  </div>
+  @error('jenis_bantuan')<p class="text-red-500 text-xs italic">{{ $message }}</p>@enderror
+</div>
+
+<!-- Input tambahan untuk Lainnya -->
+<div id="lainnya_input" class="mb-4 hidden">
+  <label for="jenis_bantuan_lainnya" class="block text-gray-700 text-sm font-bold mb-2">
+    Sebutkan Jenis Bantuan Lainnya <span class="text-red-500">*</span>
+  </label>
+  <input type="text" id="jenis_bantuan_lainnya" name="jenis_bantuan_lainnya"
+    class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+    value="{{ old('jenis_bantuan_lainnya') }}">
+</div>
 
           <div class="mb-4">
-            <label for="kondisi_ekonomi_pmks" class="block text-gray-700 text-sm font-bold mb-2">Kondisi Ekonomi
-              PMKS</label>
-            <input type="text" id="kondisi_ekonomi_pmks" name="kondisi_ekonomi_pmks"
-              value="{{ old('kondisi_ekonomi_pmks') }}"
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('kondisi_ekonomi_pmks') border-red-500 @enderror">
-            @error('kondisi_ekonomi_pmks')<p class="text-red-500 text-xs italic">{{ $message }}</p>@enderror
-          </div>
+  <label for="kondisi_ekonomi_pmks" class="block text-gray-700 text-sm font-bold mb-2">
+    Kondisi Ekonomi PMKS
+  </label>
+  <div class="relative">
+    <select id="kondisi_ekonomi_pmks" name="kondisi_ekonomi_pmks"
+      class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline appearance-none pr-8 @error('kondisi_ekonomi_pmks') border-red-500 @enderror"
+      required>
+      <option value="" disabled selected>Pilih Kondisi Ekonomi</option>
+      <option value="Produktif" {{ old('kondisi_ekonomi_pmks') == 'Produktif' ? 'selected' : '' }}>Produktif</option>
+      <option value="Tidak Produktif" {{ old('kondisi_ekonomi_pmks') == 'Tidak Produktif' ? 'selected' : '' }}>Tidak Produktif</option>
+    </select>
+    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+      </svg>
+    </div>
+  </div>
+  @error('kondisi_ekonomi_pmks')
+    <p class="text-red-500 text-xs italic">{{ $message }}</p>
+  @enderror
+</div>
 
           <div class="mb-4">
-            <label for="kondisi_sosial_pmks" class="block text-gray-700 text-sm font-bold mb-2">Kondisi Sosial
-              PMKS</label>
-            <input type="text" id="kondisi_sosial_pmks" name="kondisi_sosial_pmks"
-              value="{{ old('kondisi_sosial_pmks') }}"
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('kondisi_sosial_pmks') border-red-500 @enderror">
-            @error('kondisi_sosial_pmks')<p class="text-red-500 text-xs italic">{{ $message }}</p>@enderror
-          </div>
+  <label for="kondisi_sosial_pmks" class="block text-gray-700 text-sm font-bold mb-2">
+    Kondisi Sosial PMKS
+  </label>
+  <div class="relative">
+    <select id="kondisi_sosial_pmks" name="kondisi_sosial_pmks"
+      class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline appearance-none pr-8 @error('kondisi_sosial_pmks') border-red-500 @enderror"
+      required>
+      <option value="" disabled selected>Pilih Kondisi Sosial</option>
+      <option value="Mandiri" {{ old('kondisi_sosial_pmks') == 'Mandiri' ? 'selected' : '' }}>Mandiri</option>
+      <option value="Tidak Mandiri" {{ old('kondisi_sosial_pmks') == 'Tidak Mandiri' ? 'selected' : '' }}>Tidak Mandiri</option>
+    </select>
+    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+      </svg>
+    </div>
+  </div>
+  @error('kondisi_sosial_pmks')
+    <p class="text-red-500 text-xs italic">{{ $message }}</p>
+  @enderror
+</div>
 
           <div class="mb-6">
             <label for="foto_pmks" class="block text-gray-700 text-sm font-bold mb-2">Foto PMKS (Opsional)</label>
@@ -342,6 +388,46 @@
       });
     });
   </script>
+
+ <script>
+  function toggleLainnyaInput() {
+    const select = document.getElementById('jenis_bantuan');
+    const lainnyaInput = document.getElementById('lainnya_input');
+    if (select.value === 'Lainnya') { // ✅ ubah di sini
+      lainnyaInput.classList.remove('hidden');
+      document.getElementById('jenis_bantuan_lainnya').setAttribute('required', true);
+    } else {
+      lainnyaInput.classList.add('hidden');
+      document.getElementById('jenis_bantuan_lainnya').removeAttribute('required');
+    }
+  }
+
+  // Jalankan sekali saat halaman dimuat (untuk old value)
+  document.addEventListener('DOMContentLoaded', toggleLainnyaInput);
+</script>
+
+
+</script>
+
+<script>
+  function toggleLainnyaInputPMKS() {
+    const select = document.getElementById('jenis_pmks');
+    const lainnyaInput = document.getElementById('pmks_lainnya_input');
+    const inputField = document.getElementById('jenis_pmks_lainnya');
+
+    if (select.value === 'Lainnya') {
+      lainnyaInput.classList.remove('hidden');
+      inputField.setAttribute('required', true);
+    } else {
+      lainnyaInput.classList.add('hidden');
+      inputField.removeAttribute('required');
+      inputField.value = '';
+    }
+  }
+
+  // Jalankan sekali di awal untuk menyesuaikan old value saat validasi gagal
+  document.addEventListener('DOMContentLoaded', toggleLainnyaInputPMKS);
+</script>
 </body>
 
 </html>

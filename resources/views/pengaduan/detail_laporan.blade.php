@@ -57,56 +57,60 @@
         ];
       @endphp
 
-      {{-- Bagian Data PMKS --}}
-      <p class="font-bold mt-4 mb-2 text-gray-800">DATA PMKS</p>
-      @foreach($dataPmks as $label => $value)
-        <div class="grid grid-cols-12">
-          <span class="font-medium col-span-3">{{ $label }}</span>
-          <span class="col-span-1 text-center">:</span>
-          <span class="col-span-8 break-words">{{ $value ?? '-' }}</span>
-        </div>
-      @endforeach
+{{-- Bagian Data PMKS --}}
+<p class="font-bold text-gray-800 text-base mb-3 mt-4">DATA PMKS</p>
+@foreach($dataPmks as $label => $value)
+  <div class="grid grid-cols-12 mb-1">
+    <span class="font-medium col-span-3">{{ $label }}</span>
+    <span class="col-span-1 text-center">:</span>
+    <span class="col-span-8 break-words">{{ $value ?? '-' }}</span>
+  </div>
+@endforeach
 
-      {{-- Bagian Data Pelapor --}}
-      <p class="font-bold mt-6 mb-2 text-gray-800">DATA PELAPOR</p>
-      @foreach($dataPelapor as $label => $value)
-        <div class="grid grid-cols-12">
-          <span class="font-medium col-span-3">{{ $label }}</span>
-          <span class="col-span-1 text-center">:</span>
-          <span class="col-span-8 break-words">{{ $value ?? '-' }}</span>
-        </div>
-      @endforeach
+{{-- Bagian Data Pelapor --}}
+<hr class="border-t-2 border-gray-200 mt-8 mb-3">
+<p class="font-bold text-gray-800 text-base mb-3">DATA PELAPOR</p>
+@foreach($dataPelapor as $label => $value)
+  <div class="grid grid-cols-12 mb-1">
+    <span class="font-medium col-span-3">{{ $label }}</span>
+    <span class="col-span-1 text-center">:</span>
+    <span class="col-span-8 break-words">{{ $value ?? '-' }}</span>
+  </div>
+@endforeach
 
-      {{-- Bagian Detail Aduan --}}
-      <p class="font-bold mt-6 mb-2 text-gray-800">DETAIL ADUAN</p>
-      @foreach($dataAduan as $label => $value)
-        <div class="grid grid-cols-12">
-          <span class="font-medium col-span-3">{{ $label }}</span>
-          <span class="col-span-1 text-center">:</span>
-          <span class="col-span-8 break-words">{{ $value ?? '-' }}</span>
-        </div>
-      @endforeach
+{{-- Bagian Detail Aduan --}}
+<hr class="border-t-2 border-gray-200 mt-8 mb-3">
+<p class="font-bold text-gray-800 text-base mb-3">DETAIL ADUAN</p>
+@foreach($dataAduan as $label => $value)
+  <div class="grid grid-cols-12 mb-1">
+    <span class="font-medium col-span-3">{{ $label }}</span>
+    <span class="col-span-1 text-center">:</span>
+    <span class="col-span-8 break-words">{{ $value ?? '-' }}</span>
+  </div>
+@endforeach
 
-      {{-- Foto PMKS --}}
-      @if($pengaduan->foto_pmks_path)
-        <div class="grid grid-cols-12 pt-4">
-          <span class="font-medium col-span-3">Foto PMKS</span>
-          <span class="col-span-1 text-center">:</span>
-          <span class="col-span-8">
-            <img src="{{ Storage::url($pengaduan->foto_pmks_path) }}" alt="Foto PMKS"
-              class="max-w-xs max-h-40 rounded-lg shadow-md mt-2">
-            <a href="{{ Storage::url($pengaduan->foto_pmks_path) }}" target="_blank"
-              class="text-blue-600 hover:underline text-xs mt-1 block">Lihat Gambar Penuh</a>
-          </span>
-        </div>
-      @else
-        <div class="grid grid-cols-12 pt-4">
-          <span class="font-medium col-span-3">Foto PMKS</span>
-          <span class="col-span-1 text-center">:</span>
-          <span class="col-span-8 text-gray-500 italic">Tidak ada foto terlampir.</span>
-        </div>
-      @endif
-    </div>
+{{-- Foto PMKS --}}
+<hr class="border-t-2 border-gray-200 mt-8 mb-3">
+<p class="font-bold text-gray-800 text-base mb-3">FOTO PMKS</p>
+@if($pengaduan->foto_pmks_path)
+  <div class="grid grid-cols-12 pt-2">
+    <span class="font-medium col-span-3">Foto PMKS</span>
+    <span class="col-span-1 text-center">:</span>
+    <span class="col-span-8">
+      <img src="{{ Storage::url($pengaduan->foto_pmks_path) }}" alt="Foto PMKS"
+        class="max-w-xs max-h-40 rounded-lg shadow-md mt-2">
+      <a href="{{ Storage::url($pengaduan->foto_pmks_path) }}" target="_blank"
+        class="text-blue-600 hover:underline text-xs mt-1 block">Lihat Gambar Penuh</a>
+    </span>
+  </div>
+@else
+  <div class="grid grid-cols-12 pt-2">
+    <span class="font-medium col-span-3">Foto PMKS</span>
+    <span class="col-span-1 text-center">:</span>
+    <span class="col-span-8 text-gray-500 italic">Tidak ada foto terlampir.</span>
+  </div>
+@endif
+</div>
 
     {{-- Tombol Kembali --}}
     <div class="mt-8 pt-4 border-t text-center">

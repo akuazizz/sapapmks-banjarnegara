@@ -31,7 +31,7 @@
   <main class="flex items-center justify-center min-h-screen">
     <div class="text-center text-gray-900">
       <h1 class="text-xl md:text-2xl font-bold mb-2 leading-snug">
-        PUSAT LAYANAN ASPIRASI DAN PENANGANAN PENGADUAN<br>
+        LAYANAN PENANGANAN PENGADUAN<br>
         PENYANDANG MASALAH KESEJAHTERAAN SOSIAL
       </h1>
       <p class="text-gray-700 mb-8">KESEJAHTERAAN SOSIAL TERINTEGRASI DINAS SOSIAL</p>
