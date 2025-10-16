@@ -1,8 +1,8 @@
-<div id="detailModal" 
-     class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4"
-     onclick="if(event.target.id === 'detailModal') toggleDetailModal()">
+<div id="detailModal"
+  class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-start justify-center p-6 overflow-y-auto"
+  onclick="if(event.target.id === 'detailModal') toggleDetailModal()">
 
-  <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-3xl mx-auto relative max-h-[90vh] overflow-y-auto">
+  <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-3xl mx-auto relative overflow-y-auto max-h-[90vh]">
 
     <!-- Judul Utama -->
     <h3 class="text-2xl font-extrabold mb-6 text-center text-blue-900">DETAIL LAPORAN</h3>
@@ -10,10 +10,8 @@
     <!-- Tombol Tutup -->
     <button type="button" onclick="toggleDetailModal()"
       class="absolute top-4 right-4 text-gray-400 hover:text-gray-700">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M6 18L18 6M6 6l12 12"></path>
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
       </svg>
     </button>
 
@@ -99,15 +97,11 @@
 
       @if($pengaduan->foto_pmks_path)
         <div class="bg-white p-4 rounded-lg shadow text-center">
-          <img 
-              src="{{ Storage::url($pengaduan->foto_pmks_path) }}" 
-              alt="Foto PMKS"
-              class="rounded-md shadow-md mx-auto max-w-xs cursor-pointer transition-transform hover:scale-105"
-              onclick="openModal('{{ Storage::url($pengaduan->foto_pmks_path) }}')"
-          >
-          <a href="javascript:void(0)" 
-             class="text-blue-900 hover:underline text-sm mt-2 block font-medium"
-             onclick="openModal('{{ Storage::url($pengaduan->foto_pmks_path) }}')">
+          <img src="{{ Storage::url($pengaduan->foto_pmks_path) }}" alt="Foto PMKS"
+            class="rounded-md shadow-md mx-auto max-w-xs cursor-pointer transition-transform hover:scale-105"
+            onclick="openModal('{{ Storage::url($pengaduan->foto_pmks_path) }}')">
+          <a href="javascript:void(0)" class="text-blue-900 hover:underline text-sm mt-2 block font-medium"
+            onclick="openModal('{{ Storage::url($pengaduan->foto_pmks_path) }}')">
             Lihat Lebih Besar
           </a>
         </div>
@@ -121,21 +115,19 @@
 <!-- Modal Popup Foto Besar -->
 <div id="imageModal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
   <div class="relative">
-    <button onclick="closeModal()" 
-            class="absolute top-2 right-2 text-white text-2xl font-bold hover:text-gray-300">
+    <button onclick="closeModal()" class="absolute top-2 right-2 text-white text-2xl font-bold hover:text-gray-300">
       &times;
     </button>
-    <img id="modalImage" src="" alt="Foto PMKS Besar" 
-         class="max-h-[90vh] max-w-[90vw] rounded-lg shadow-2xl">
+    <img id="modalImage" src="" alt="Foto PMKS Besar" class="max-h-[90vh] max-w-[90vw] rounded-lg shadow-2xl">
   </div>
 </div>
 
 <script>
   function openModal(imageSrc) {
-      document.getElementById('modalImage').src = imageSrc;
-      document.getElementById('imageModal').classList.remove('hidden');
+    document.getElementById('modalImage').src = imageSrc;
+    document.getElementById('imageModal').classList.remove('hidden');
   }
   function closeModal() {
-      document.getElementById('imageModal').classList.add('hidden');
+    document.getElementById('imageModal').classList.add('hidden');
   }
 </script>
