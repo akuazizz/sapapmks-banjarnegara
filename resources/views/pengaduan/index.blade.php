@@ -82,8 +82,8 @@
         @forelse ($pengaduans as $pengaduan)
         {{-- LOGIKA PENANDA BARU PADA TR DAN TD --}}
         @php
-        // Asumsi "BARU" adalah status 'Diterima' (sesuai DashboardController)
-        $isNew = $pengaduan->status === 'Diterima' || $pengaduan->status === 'Menunggu Diproses';
+        // Asumsi "BARU" adalah status 'Diajukan' (sesuai DashboardController)
+        $isNew = $pengaduan->status === 'Diajukan' || $pengaduan->status === 'Menunggu Diproses';
         $rowClass = $isNew ? 'bg-blue-50 hover:bg-blue-100 transition duration-150' : 'hover:bg-gray-50';
         @endphp
         <tr class="{{ $rowClass }}">
@@ -170,8 +170,8 @@ break;
 case 'Ditolak':
 $color = 'bg-red-600'; // Merah tua untuk ditolak
 break;
-case 'Diterima':
-$color = 'bg-green-500'; // Hijau untuk diterima
+case 'Diajukan':
+$color = 'bg-green-500'; // Hijau untuk Diajukan
 break;
 case 'Selesai':
 $color = 'bg-blue-600'; // Biru untuk selesai

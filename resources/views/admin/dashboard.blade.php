@@ -14,7 +14,7 @@
   'Diverifikasi' => 'bg-gray-500',
   'Diproses' => 'bg-yellow-500',
   'Ditolak' => 'bg-red-600',
-  'Diterima' => 'bg-green-500',
+  'Diajukan' => 'bg-green-500',
   'Selesai' => 'bg-indigo-600',
   ];
   @endphp
@@ -47,7 +47,7 @@
         'Diverifikasi' => '#6b7280', // abu
         'Diproses' => '#facc15', // kuning
         'Ditolak' => '#dc2626', // merah
-        'Diterima' => '#22c55e', // hijau
+        'Diajukan' => '#22c55e', // hijau
         'Selesai' => '#6366f1', // ungu
         ];
         @endphp
@@ -152,7 +152,7 @@
           '#6b7280', // Diverifikasi
           '#facc15', // Diproses
           '#dc2626', // Ditolak
-          '#22c55e', // Diterima
+          '#22c55e', // Diajukan
           '#6366f1' // Selesai
         ],
         hoverOffset: 4

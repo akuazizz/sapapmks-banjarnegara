@@ -147,7 +147,7 @@
                 <h2 class="text-xl font-bold text-gray-800 mb-4">Status Pengaduan</h2>
                 <div class="flex justify-between items-center relative">
                     @php
-                    $statusSteps = ['Diterima', 'Diverifikasi', 'Diproses', 'Selesai'];
+                    $statusSteps = ['Diajukan', 'Diverifikasi', 'Diproses', 'Selesai'];
                     $currentStatusIndex = array_search($pengaduan->status, $statusSteps);
                     @endphp
 

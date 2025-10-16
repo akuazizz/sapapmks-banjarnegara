@@ -52,19 +52,19 @@ class DashboardController extends Controller
 
         // Siapkan array untuk kartu statistik, dengan default 0
         $stats = [
-            // 'Laporan Baru' diambil dari status 'Diterima' (sesuai figma)
-            'Laporan Baru' => $statusCounts['Diterima'] ?? 0,
-            'Diversifikasi' => $statusCounts['Diversifikasi'] ?? 0,
+            // 'Laporan Baru' diambil dari status 'Diajukan' (sesuai figma)
+            'Laporan Baru' => $statusCounts['Diajukan'] ?? 0,
+            'Diverifikasi' => $statusCounts['Diverifikasi'] ?? 0,
             'Diproses' => $statusCounts['Diproses'] ?? 0,
             'Ditolak' => $statusCounts['Ditolak'] ?? 0, // Asumsi Anda akan menambahkan status Ditolak
             'Selesai' => $statusCounts['Selesai'] ?? 0,
         ];
 
-        // Total Seluruh Pengaduan (untuk kartu "Diterima" jika ingin dihitung semua yang masuk)
-        $stats['Diterima'] = array_sum($stats); // Menghitung total seluruh pengaduan yang ada (yang sudah masuk)
+        // Total Seluruh Pengaduan (untuk kartu "Diajukan" jika ingin dihitung semua yang masuk)
+        $stats['Diajukan'] = array_sum($stats); // Menghitung total seluruh pengaduan yang ada (yang sudah masuk)
 
-        // Asumsi "Laporan Baru" adalah status 'Diterima' yang belum diubah
-        $stats['Laporan Baru'] = $statusCounts['Diterima'] ?? 0;
+        // Asumsi "Laporan Baru" adalah status 'Diajukan' yang belum diubah
+        $stats['Laporan Baru'] = $statusCounts['Diajukan'] ?? 0;
 
         // 2. Ambil Notifikasi Terbaru (misalnya 5 laporan terakhir, diurutkan berdasarkan jenis PMKS)
         $notifikasi = Pengaduan::orderBy('created_at', 'desc')
@@ -74,10 +74,10 @@ class DashboardController extends Controller
         // 3. Siapkan data untuk Chart (sesuai status yang ingin ditampilkan di chart)
         $chartData = [
             'Laporan Baru'   => $stats['Laporan Baru'],
-            'Diversifikasi'  => $stats['Diversifikasi'],
+            'Diverifikasi'  => $stats['Diverifikasi'],
             'Diproses'       => $stats['Diproses'],
             'Ditolak'        => $stats['Ditolak'],
-            'Diterima'       => $stats['Diterima'],
+            'Diajukan'       => $stats['Diajukan'],
             'Selesai'        => $stats['Selesai'],
         ];
 

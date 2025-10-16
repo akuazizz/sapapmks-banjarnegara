@@ -56,7 +56,7 @@ class PengaduanController extends Controller
         }
 
         // Set default status dan tanggal
-        $validatedData['status'] = 'Diterima';
+        $validatedData['status'] = 'Diajukan';
         $validatedData['tanggal_laporan'] = now();
 
         // Simpan pengaduan tanpa kode
@@ -110,7 +110,7 @@ class PengaduanController extends Controller
         $createdAt = Carbon::parse($pengaduan->created_at);
 
         $steps = [
-            'Diterima' => 'Pengaduan diterima oleh admin',
+            'Diajukan' => 'Pengaduan Diajukan oleh admin',
             'Diverifikasi' => 'Pengaduan sedang diverifikasi',
             'Diproses' => 'Pengaduan sedang diproses',
             'Selesai' => 'Pengaduan selesai ditindaklanjuti',

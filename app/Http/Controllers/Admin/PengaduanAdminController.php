@@ -40,7 +40,7 @@ class PengaduanAdminController extends Controller
         $pengaduans = $query->get();
 
         // Status yang tersedia untuk dropdown filter
-        $statuses = ['Semua Status', 'Diterima', 'Diverifikasi', 'Diproses', 'Selesai', 'Ditolak'];
+        $statuses = ['Semua Status', 'Diajukan', 'Diverifikasi', 'Diproses', 'Selesai', 'Ditolak'];
 
         return view('pengaduan.index', compact('pengaduans', 'statuses'));
     }
@@ -48,7 +48,7 @@ class PengaduanAdminController extends Controller
     public function edit(Pengaduan $pengaduan)
     {
         // Status yang tersedia untuk dropdown
-        $statuses = ['Diterima', 'Diverifikasi', 'Diproses', 'Selesai', 'Ditolak'];
+        $statuses = ['Diajukan', 'Diverifikasi', 'Diproses', 'Selesai', 'Ditolak'];
         return view('admin.pengaduan.edit', compact('pengaduan', 'statuses'));
     }
 
@@ -56,7 +56,7 @@ class PengaduanAdminController extends Controller
     {
         // 1. Validasi Dasar
         $rules = [
-            'status' => 'required|in:Diterima,Diverifikasi,Diproses,Selesai,Ditolak',
+            'status' => 'required|in:Diajukan,Diverifikasi,Diproses,Selesai,Ditolak',
             'alasan_penolakan' => 'nullable|string|max:500', // Default nullable
         ];
 
