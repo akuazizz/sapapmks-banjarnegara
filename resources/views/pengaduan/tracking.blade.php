@@ -123,7 +123,7 @@
                             <div class="flex">
                                 <span class="w-1/3 text-gray-600">Tanggal Pengajuan</span>
                                 <span class="w-2/3 text-gray-800 font-medium">:
-                                    {{ \Carbon\Carbon::parse($pengaduan->created_at)->translatedFormat('d F Y, H:i') }}
+                                    {{ \Carbon\Carbon::parse($pengaduan->status_updated_at)->translatedFormat('d F Y, H:i') }}
                                 </span>
                             </div>
                             <div class="flex">
@@ -215,9 +215,12 @@
                                             @endif
                                         </p>
 
-                                        @if($item['tanggal'])
+                                        @php
+                                            $tanggal = $item['tanggal'] ?? $pengaduan->status_updated_at;
+                                        @endphp
+                                        @if($tanggal)
                                             <p class="text-sm text-gray-500">
-                                                {{ \Carbon\Carbon::parse($item['tanggal'])->translatedFormat('d F Y, H:i') }}
+                                                {{ \Carbon\Carbon::parse($tanggal)->setTimezone('Asia/Jakarta')->translatedFormat('d F Y, H:i') }}
                                             </p>
                                         @else
                                             <p class="text-sm text-gray-500">Belum diperbarui</p>

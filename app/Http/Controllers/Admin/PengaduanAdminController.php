@@ -78,6 +78,10 @@ class PengaduanAdminController extends Controller
             $validatedData['keterangan_selesai'] = null;
         }
 
+        // Update waktu status terakhir
+        $validatedData['status_updated_at'] = now();
+
+        // Simpan perubahan
         $pengaduan->update($validatedData);
 
         return redirect()->route('admin.pengaduan.index')

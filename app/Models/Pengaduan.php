@@ -42,6 +42,7 @@ class Pengaduan extends Model
         'kode_pengaduan',
         'alasan_penolakan',
         'keterangan_selesai',
+        'status_updated_at',
     ];
 
 

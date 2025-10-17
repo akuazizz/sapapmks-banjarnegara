@@ -74,21 +74,47 @@ class PengaduanController extends Controller
 
     public function tracking(Request $request)
     {
+        $kode = $request->get('kode_pengaduan');
         $pengaduan = null;
         $riwayat_status = [];
 
-        if ($request->has('kode_pengaduan') && $request->kode_pengaduan != '') {
-            $pengaduan = Pengaduan::where('kode_pengaduan', $request->kode_pengaduan)->first();
+        if ($kode) {
+            $pengaduan = Pengaduan::where('kode_pengaduan', $kode)->first();
+        }
 
-            if ($pengaduan) {
-                // Untuk riwayat status, kita akan membuat array dummy berdasarkan status yang ada
-                // Di aplikasi nyata, ini akan diambil dari tabel riwayat status (misalnya, `status_logs`)
-                $riwayat_status = $this->generateRiwayatStatus($pengaduan);
-            }
+        if ($pengaduan) {
+            $riwayat_status = [
+                [
+                    'deskripsi' => 'Pengaduan diajukan oleh pelapor',
+                    'tanggal' => $pengaduan->created_at,
+                    'active' => in_array($pengaduan->status, ['Diajukan', 'Diverifikasi', 'Diproses', 'Selesai', 'Ditolak']),
+                ],
+                [
+                    'deskripsi' => 'Pengaduan sedang diverifikasi',
+                    'tanggal' => $pengaduan->status === 'Diverifikasi' ? $pengaduan->status_updated_at : null,
+                    'active' => in_array($pengaduan->status, ['Diverifikasi', 'Diproses', 'Selesai', 'Ditolak']),
+                ],
+                [
+                    'deskripsi' => 'Pengaduan sedang diproses oleh petugas',
+                    'tanggal' => $pengaduan->status === 'Diproses' ? $pengaduan->status_updated_at : null,
+                    'active' => in_array($pengaduan->status, ['Diproses', 'Selesai']),
+                ],
+                [
+                    'deskripsi' => 'Pengaduan selesai ditindaklanjuti',
+                    'tanggal' => $pengaduan->status === 'Selesai' ? $pengaduan->status_updated_at : null,
+                    'active' => $pengaduan->status === 'Selesai',
+                ],
+                [
+                    'deskripsi' => 'Pengaduan ditolak',
+                    'tanggal' => $pengaduan->status === 'Ditolak' ? $pengaduan->status_updated_at : null,
+                    'active' => $pengaduan->status === 'Ditolak',
+                ],
+            ];
         }
 
         return view('pengaduan.tracking', compact('pengaduan', 'riwayat_status'));
     }
+
 
     // Metode baru untuk menampilkan detail laporan
     public function detailLaporan($kode)
