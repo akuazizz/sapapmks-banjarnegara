@@ -54,38 +54,33 @@ class PengaduanAdminController extends Controller
 
     public function update(Request $request, Pengaduan $pengaduan)
     {
-        // 1. Validasi Dasar
         $rules = [
             'status' => 'required|in:Diajukan,Diverifikasi,Diproses,Selesai,Ditolak',
-            'alasan_penolakan' => 'nullable|string|max:500', // Default nullable
+            'alasan_penolakan' => 'nullable|string|max:500',
+            'keterangan_selesai' => 'nullable|string|max:500',
         ];
 
-        // 2. Validasi Kondisional untuk DITOLAK
         if ($request->status === 'Ditolak') {
-            // Jika statusnya Ditolak, Alasan wajib diisi
             $rules['alasan_penolakan'] = 'required|string|max:500';
+        }
+
+        if ($request->status === 'Selesai') {
+            $rules['keterangan_selesai'] = 'required|string|max:500';
         }
 
         $validatedData = $request->validate($rules);
 
-        // 3. Bersihkan alasan jika status TIDAK DITOLAK
+        // Bersihkan field yang tidak relevan
         if ($request->status !== 'Ditolak') {
             $validatedData['alasan_penolakan'] = null;
         }
+        if ($request->status !== 'Selesai') {
+            $validatedData['keterangan_selesai'] = null;
+        }
 
-        // 4. Update Data
         $pengaduan->update($validatedData);
 
-        return redirect()->route('admin.pengaduan.index')->with('success', 'Status pengaduan berhasil diperbarui.');
-    }
-
-    public function exportExcel(Request $request)
-    {
-        $status = $request->status;
-        $tanggal = $request->filled('tanggal')
-            ? Carbon::parse($request->tanggal)->format('Y-m-d')
-            : null;
-
-        return Excel::download(new PengaduanExport($status, $tanggal), 'pengaduan.xlsx');
+        return redirect()->route('admin.pengaduan.index')
+            ->with('success', 'Status pengaduan berhasil diperbarui.');
     }
 }
